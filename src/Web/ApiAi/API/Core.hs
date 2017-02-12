@@ -29,11 +29,6 @@ import Network.HTTP.Client ( newManager )
 import Network.HTTP.Client.TLS ( tlsManagerSettings )
 import Web.ApiAi.Data.Core
 
-newtype ClientToken = ClientToken { unClientToken :: Text
-                                  } deriving Show
-newtype DeveloperToken = DeveloperToken { unDeveloperToken :: Text
-                                        } deriving Show
-
 data ApiAiClientState = ApiAiClientState { clientToken :: ClientToken
                                          , clientSession :: Maybe SessionId
                                          } deriving Show

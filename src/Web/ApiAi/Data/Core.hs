@@ -6,6 +6,11 @@ module Web.ApiAi.Data.Core where
 import ClassyPrelude
 import Data.Aeson
 
+newtype ClientToken = ClientToken { unClientToken :: Text
+                                  } deriving (Show, ToJSON, FromJSON)
+newtype DeveloperToken = DeveloperToken { unDeveloperToken :: Text
+                                        } deriving (Show, ToJSON, FromJSON)
+
 newtype SessionId = SessionId { unSessionId :: Text
                               } deriving (Show, ToJSON, FromJSON)
 
