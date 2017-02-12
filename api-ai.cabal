@@ -1,0 +1,54 @@
+name:                api-ai
+version:             0.1.0.0
+synopsis:            Libarary for interactive with ApiAI (https://api.ai) based on servant
+description:         Please see README.md
+homepage:            https://github.com/CthulhuDen/api-ai#readme
+license:             BSD3
+license-file:        LICENSE
+author:              Cthulhu <cthulhu.den@gmail.com>
+maintainer:          cthulhu.den@gmail.com
+copyright:           2017 Cthulhu
+category:            Web NLP
+build-type:          Simple
+extra-source-files:  README.md
+cabal-version:       >=1.10
+
+library
+  hs-source-dirs:      src
+  exposed-modules:     Web.ApiAi
+  other-modules:       Web.ApiAi.Data
+                       Web.ApiAi.Data.Entities
+                       Web.ApiAi.Requests
+                       Web.ApiAi.API
+                       Web.ApiAi.API.Core
+                       Web.ApiAi.API.Entities
+  build-depends:       base >= 4.7 && < 5
+                     , classy-prelude
+                     , aeson
+                     , servant >= 0.9 && <0.10
+                     , servant-client >= 0.9 && <0.10
+                     , http-client
+                     , http-client-tls
+                     , http-conduit
+                     , mtl
+  default-language:    Haskell2010
+  default-extensions:  NoImplicitPrelude
+                       OverloadedStrings
+                       FlexibleContexts
+                       FlexibleInstances
+
+executable api-ai
+  hs-source-dirs:      app
+  main-is:             Main.hs
+  ghc-options:         -O2 -threaded -rtsopts -with-rtsopts=-N
+  build-depends:       base
+                     , classy-prelude
+                     , api-ai
+  default-language:    Haskell2010
+  default-extensions:  NoImplicitPrelude
+                       OverloadedStrings
+                       FlexibleContexts
+
+source-repository head
+  type:     git
+  location: https://github.com/CthulhuDen/api-ai
