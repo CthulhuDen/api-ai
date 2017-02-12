@@ -14,6 +14,11 @@ instance FromJSON EntityEntry where
     parseJSON = withObject "EntityEntry" $ \o -> EntityEntry   <$> o .: "value"
                                                                 <*> o .: "synonyms"
 
+instance ToJSON EntityEntry where
+    toJSON (EntityEntry v s) = object [ "value" .= v
+                                      , "synonyms" .= s
+                                      ]
+
 newtype EntityId = EntityId { unEntityId :: Text
                             } deriving ( Show, ToHttpApiData, FromHttpApiData, FromJSON, ToJSON )
 
@@ -42,3 +47,11 @@ instance FromJSON Entity where
                                                     <*> o .: "entries"
                                                     <*> o .: "isEnum"
                                                     <*> o .: "automatedExpansion"
+
+instance ToJSON Entity where
+    toJSON (Entity i n e ie a) = object [ "id" .= i
+                                        , "name" .= n
+                                        , "entries" .= e
+                                        , "isEnum" .= ie
+                                        , "automatedExpansion" .= a
+                                        ]

@@ -15,8 +15,6 @@ import Servant.Client
 import Servant.API
 import Web.ApiAi.Data.Entities
 import Data.Proxy
-import Control.Monad.State
-import Network.HTTP.Client ( Manager )
 
 type ApiAiEntitiesAPI = AuthProtect DeveloperToken :> "entities" :> Get '[JSON] [EntityPreview]
                         :<|> AuthProtect DeveloperToken :> "entities" :> Capture "entityId" EntityId :> Get '[JSON] Entity
@@ -28,14 +26,14 @@ getEntities_ :: AuthenticateReq (AuthProtect DeveloperToken) -> ClientM [EntityP
 getEntity_ :: AuthenticateReq (AuthProtect DeveloperToken) -> EntityId -> ClientM Entity
 getEntities_ :<|> getEntity_ = client entitiesAPI
 
-getEntities :: HasDeveloperToken t => t -> IO (Either ServantError [EntityPreview])
-getEntities t = runWithToken getEntitiesM $ getDeveloperToken t
-
 getEntitiesM :: ApiAiDeveloper [EntityPreview]
 getEntitiesM = auth getEntities_ >>= lift
 
-getEntity :: HasDeveloperToken t => t -> EntityId -> IO (Either ServantError Entity)
-getEntity t eid = runWithToken (getEntityM eid) $ getDeveloperToken t
+getEntities :: HasDeveloperToken t => t -> IO (Either ServantError [EntityPreview])
+getEntities t = runWithToken getEntitiesM $ getDeveloperToken t
 
 getEntityM :: EntityId -> ApiAiDeveloper Entity
 getEntityM eid = auth getEntity_ >>= lift . ($ eid)
+
+getEntity :: HasDeveloperToken t => t -> EntityId -> IO (Either ServantError Entity)
+getEntity t eid = runWithToken (getEntityM eid) $ getDeveloperToken t

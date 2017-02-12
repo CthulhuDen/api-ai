@@ -17,11 +17,20 @@ library
   hs-source-dirs:      src
   exposed-modules:     Web.ApiAi
   other-modules:       Web.ApiAi.Data
+                       Web.ApiAi.Data.Core
                        Web.ApiAi.Data.Entities
+                       Web.ApiAi.Data.Intents
+                       Web.ApiAi.Data.Query
+                       Web.ApiAi.Data.Messages
                        Web.ApiAi.Requests
+                       Web.ApiAi.Requests.Query
+                       Web.ApiAi.Responses
+                       Web.ApiAi.Responses.Core
+                       Web.ApiAi.Responses.Query
                        Web.ApiAi.API
                        Web.ApiAi.API.Core
                        Web.ApiAi.API.Entities
+                       Web.ApiAi.API.Query
   build-depends:       base >= 4.7 && < 5
                      , classy-prelude
                      , aeson
@@ -40,7 +49,7 @@ library
 executable api-ai
   hs-source-dirs:      app
   main-is:             Main.hs
-  ghc-options:         -O2 -threaded -rtsopts -with-rtsopts=-N
+  ghc-options:         -O2 -threaded -rtsopts -with-rtsopts=-N -Wall -Werror
   build-depends:       base
                      , classy-prelude
                      , api-ai
