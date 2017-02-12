@@ -10,9 +10,9 @@ import Data.Aeson.Types ( Pair )
 import Web.ApiAi.Data.Core
 import Web.ApiAi.Data.Entities
 import Web.ApiAi.Data.Query
+import Data.Aeson.Sparse
 
-data BaseQueryRequest = BaseQueryRequest { bqReqV :: Text
-                                         , bqReqSessionId :: Maybe SessionId
+data BaseQueryRequest = BaseQueryRequest { bqReqSessionId :: Maybe SessionId
                                          -- ^ Optional because can also be set in state
                                          , bqReqLang :: Lang
                                          , bqReqContexts :: Maybe [QueryContextRequest]
@@ -24,8 +24,7 @@ data BaseQueryRequest = BaseQueryRequest { bqReqV :: Text
                                          } deriving Show
 
 bqrPairs :: BaseQueryRequest -> Maybe SessionId -> [Pair]
-bqrPairs bqr mSid = [ "v" .= bqReqV bqr
-                    , "sessionId" .= (mSid <|> bqReqSessionId bqr)
+bqrPairs bqr mSid = [ "sessionId" .= (mSid <|> bqReqSessionId bqr)
                     , "lang" .= bqReqLang bqr
                     , "contexts" .= bqReqContexts bqr
                     , "resetContexts" .= bqReqResetContext bqr
@@ -36,16 +35,16 @@ bqrPairs bqr mSid = [ "v" .= bqReqV bqr
                     ]
 
 instance ToJSON (WithDefaultSessionId BaseQueryRequest) where
-    toJSON (WithDefaultSessionId bqr ms) = object $ bqrPairs bqr ms
+    toJSON (WithDefaultSessionId bqr ms) = sparseObj $ bqrPairs bqr ms
 
 data EventRequest = EventRequest { eeqReqName :: Text
                                  , eeqReqData :: Maybe Parameters
                                  } deriving Show
 
 instance ToJSON EventRequest where
-    toJSON (EventRequest n d) = object [ "name" .= n
-                                       , "data" .= d
-                                       ]
+    toJSON (EventRequest n d) = sparseObj [ "name" .= n
+                                          , "data" .= d
+                                          ]
 
 data QueryRequest = QueryRequest      { qReqQuery :: Text
                                       , qReqEvent :: Maybe EventRequest
@@ -59,20 +58,17 @@ data QueryRequest = QueryRequest      { qReqQuery :: Text
 
 instance ToJSON (WithDefaultSessionId QueryRequest) where
     toJSON (WithDefaultSessionId (QueryRequest q e r) ms)
-                = object $ [ "query" .= q
-                           , "event" .= e
-                           ] <> bqrPairs r ms
+                = sparseObj $ [ "query" .= q
+                              , "event" .= e
+                              ] <> bqrPairs r ms
     toJSON (WithDefaultSessionId (EventQueryRequest q e r) ms)
-                = object $ [ "query" .= q
-                           , "event" .= e
-                           ] <> bqrPairs r ms
-
-versionDate :: Text
-versionDate = "20170212"
+                = sparseObj $ [ "query" .= q
+                              , "event" .= e
+                              ] <> bqrPairs r ms
 
 defaultLang :: Lang
 defaultLang = RussianLang
 
 queryRequest :: Text -> QueryRequest
-queryRequest q = QueryRequest q Nothing $ BaseQueryRequest versionDate Nothing defaultLang
-                                                    Nothing Nothing Nothing Nothing Nothing Nothing
+queryRequest q = QueryRequest q Nothing $ BaseQueryRequest Nothing defaultLang Nothing
+                                                    Nothing Nothing Nothing Nothing Nothing

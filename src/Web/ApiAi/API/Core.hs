@@ -25,7 +25,7 @@ import Servant.API hiding ( addHeader )
 import Servant.Client
 import Servant.Common.Req ( Req, addHeader )
 import Control.Monad.State
-import Network.HTTP.Client ( Manager, newManager )
+import Network.HTTP.Client ( newManager )
 import Network.HTTP.Client.TLS ( tlsManagerSettings )
 import Web.ApiAi.Data.Core
 

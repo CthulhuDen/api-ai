@@ -16,7 +16,7 @@ instance ToJSON Lang where
     toJSON (Lang l) = toJSON l
 
 instance FromJSON Lang where
-    parseJSON = withText "Language" $ \l -> case l of
+    parseJSON = withText "Lang" $ \l -> case l of
                                             "ru" -> return RussianLang
                                             _ -> return $ Lang l
 

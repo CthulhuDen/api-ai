@@ -63,7 +63,7 @@ instance FromJSON QueryResult where
 
 data QueryResponse = QueryResponse { qRespId :: Text
                                    , qRespTimestamp :: UTCTime
-                                   , qRespLanguage :: Lang
+                                   , qRespLang :: Lang
                                    , qRespResult :: QueryResult
                                    , qRespStatus :: ResponseStatus
                                    , qRespSessionId :: SessionId
@@ -72,7 +72,7 @@ data QueryResponse = QueryResponse { qRespId :: Text
 instance FromJSON QueryResponse where
     parseJSON = withObject "QueryResponse" $ \o -> QueryResponse <$> o .: "id"
                                                                     <*> o .: "timestamp"
-                                                                    <*> o .: "language"
+                                                                    <*> o .: "lang"
                                                                     <*> o .: "result"
                                                                     <*> o .: "status"
                                                                     <*> o .: "sessionId"

@@ -16,7 +16,9 @@ cabal-version:       >=1.10
 library
   hs-source-dirs:      src
   exposed-modules:     Web.ApiAi
-  other-modules:       Web.ApiAi.Data
+  other-modules:       Data.Aeson.Sparse
+                       Servant.API.JSONUtf8
+                       Web.ApiAi.Data
                        Web.ApiAi.Data.Core
                        Web.ApiAi.Data.Entities
                        Web.ApiAi.Data.Intents
@@ -40,6 +42,7 @@ library
                      , http-client-tls
                      , http-conduit
                      , mtl
+                     , http-media
   default-language:    Haskell2010
   default-extensions:  NoImplicitPrelude
                        OverloadedStrings

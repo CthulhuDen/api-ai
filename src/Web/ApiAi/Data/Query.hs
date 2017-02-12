@@ -3,6 +3,7 @@ module Web.ApiAi.Data.Query where
 import ClassyPrelude
 import Web.ApiAi.Data.Core
 import Data.Aeson
+import Data.Aeson.Sparse
 
 data QueryContextRequest = QueryContextRequest { qcrName :: Text
                                                , qcrParameters :: Maybe Parameters
@@ -10,10 +11,10 @@ data QueryContextRequest = QueryContextRequest { qcrName :: Text
                                                } deriving Show
 
 instance ToJSON QueryContextRequest where
-    toJSON (QueryContextRequest n p l) = object [ "name" .= n
-                                                , "parameters" .= p
-                                                , "lifespan" .= l
-                                                ]
+    toJSON (QueryContextRequest n p l) = sparseObj [ "name" .= n
+                                                  , "parameters" .= p
+                                                  , "lifespan" .= l
+                                                  ]
 
 instance FromJSON QueryContextRequest where
     parseJSON = withObject "QueryContextRequest" $ \o -> QueryContextRequest <$> o .: "name"
